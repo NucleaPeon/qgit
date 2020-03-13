@@ -13,10 +13,14 @@
 	#pragma comment(linker,"/subsystem:windows")
 #endif
 
+
+#ifdef Q_OS_MAC
+#include "cocoainitializer.h"
+#endif
+
 using namespace QGit;
 
 int main(int argc, char* argv[]) {
-
 	QApplication app(argc, argv);
 #if QT_VERSION >= QT_VERSION_CHECK(5,6,0)
     app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
@@ -33,6 +37,9 @@ int main(int argc, char* argv[]) {
 
 	initMimePix();
 
+#ifdef Q_OS_MAC
+    CocoaInitializer initializer;
+#endif
 	MainImpl* mainWin = new MainImpl;
 	mainWin->show();
 	QObject::connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
